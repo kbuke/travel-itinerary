@@ -42,4 +42,6 @@ class SitesModel(db.Model, SerializerMixin):
             if existing_site and existing_site.id != self.id:
                 raise ValueError(f"{value} is already registered on this app.")
         
+        return value
+        
       
