@@ -10,6 +10,14 @@ class CountryModel(db.Model, SerializerMixin):
     country_img = db.Column(db.String, nullable = False)
     country_intro = db.Column(db.String, nullable = False)
 
+    # RELATIONSHIPS
+    sites = db.relationship("SitesModel", back_populates = "country")
+
+    # SERIALISE RULES
+    serialize_rules = (
+        "-sites.country",
+    )
+
     @validates("country_name")
     def validate_country(self, key, value):
         # 1 - check value exists and is a string
