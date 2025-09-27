@@ -1,0 +1,38 @@
+------------------------------------------ Available Models ------------------------------------------
+
+Users
+    Users represent individual accounts to set up their itinerary
+    Users must be able to follow eachother
+
+Countries
+    Available countries where USERS can set up itineraries for
+
+Cities
+    Cities in countries that USERS can plan to visit
+
+Sites
+    Sites that people can plan to visit
+
+    ----- Attributes -----
+    site_name
+    site_image
+    address_line_1
+    address_line_2
+    address_line_3
+    address_line_4
+    opening_time
+    closing_time
+
+Site Categories
+    What type of site is this, it can be historical, bars, beach etc
+
+Itineraries
+    The itineraries planned for USERS
+    
+    ----- Attributes -----
+        start_date
+        end_date
+        trip_type => is it a single-country trip, or a multi-country trip
+
+
+Day Itinerary
