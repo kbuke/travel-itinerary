@@ -12,6 +12,11 @@ class InterestsModel(db.Model, SerializerMixin):
     # RELATIONS
     sites = db.relationship("SitesModel", back_populates = "interests", secondary = "site_interests")
 
+    # SERIALIZE RULES
+    serialize_rules = (
+        "-sites.interests",
+    )
+
     @validates("interest")
     def validate_interest(self, key, value):
         # 1 - Ensure interest is a string, and not an empty one
@@ -29,3 +34,5 @@ class InterestsModel(db.Model, SerializerMixin):
     def validate_img(self, key, value):
         if not isinstance(value, str) or value == "":
             raise ValueError("Please enter a proper string for the interests image")
+        
+        return value
