@@ -20,3 +20,5 @@ class CountryModel(db.Model, SerializerMixin):
         exisiting_country = CountryModel.query.filter(CountryModel.country_name == value).first()
         if exisiting_country and exisiting_country.id != self.id:
             raise ValueError(f"{value} is already registered on this application.")
+        
+        return value
