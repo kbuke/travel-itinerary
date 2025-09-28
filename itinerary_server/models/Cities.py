@@ -33,10 +33,13 @@ class CityModel(db.Model, SerializerMixin):
     @validates("population")
     def validate_population(self, key, value):
         # 1 - Convert inputted population to a integer
-        population_int = int(value)
+        try:
+            population_int = int(value)
+        except ValueError:
+            raise ValueError("Population must be a valid integer")
 
         # 2 - Check the value is an integer and has a poplulaton of at least a thousand and less than 50million
-        if not isinstance(value, int) or population_int < 1000 or 50_000_000 < population_int:
+        if population_int < 1000 or 50_000_000 < population_int:
             raise ValueError("Value must be an integer greater than a thousand, and less than 50million")
         
         # 3 - Tidy up population size if number is between one-thousan and nine-hundred-and-ninety-nine-thousand
@@ -66,9 +69,9 @@ class CityModel(db.Model, SerializerMixin):
         city_name = value if key == "city_name" else self.city_name
         country_id = value if key == "country_id" else self.country_id
 
-        existing_city_country = CityModel.query.filter_by(
-            city_name.lower()==city_name.lower(),
-            country_id==country_id
+        existing_city_country = CityModel.query.filter(
+            func.lower(CityModel.city_name)==city_name.lower(),
+            CityModel.country_id==country_id
         ).first()
 
         if existing_city_country and existing_city_country.id != self.id:
