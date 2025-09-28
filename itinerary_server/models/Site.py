@@ -25,9 +25,13 @@ class SitesModel(db.Model, SerializerMixin):
 
     interests = db.relationship("InterestsModel", back_populates = "sites", secondary = "site_interests")
 
+    wishlists = db.relationship("UserWishListModel", back_populates = "sites", secondary = "site_wishlists")
+
     # SERIALIZE RULES
     serialize_rules = (
         "-country.sites",
+
+        "-wishlists.sites",
     )
 
     # VALIDATES

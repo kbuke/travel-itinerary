@@ -13,6 +13,13 @@ class UserModel(db.Model, SerializerMixin):
     gender = db.Column(db.String, nullable = False)
     is_private = db.Column(db.Boolean, nullable = False)
 
+    # RELATIONS
+    wishlists = db.relationship("UserWishListModel", back_populates = "user")
+
+    serialize_rules = (
+        "-wishlists.user",
+    )
+
     # HASH PASSWORD
     @hybrid_property
     def password_hash(self):

@@ -12,6 +12,10 @@ from resources.Cities import CityList, City
 
 from resources.Users import UserList
 
+from resources.SiteWishlist import SiteWishlistList
+
+from resources.UserWishlists import UserWishlistList
+
 api.add_resource(CountriesList, "/countries")
 
 api.add_resource(SitesList, "/sites")
@@ -25,6 +29,10 @@ api.add_resource(CityList, "/cities")
 api.add_resource(City, "/cities/<int:id>")
 
 api.add_resource(UserList, "/users")
+
+api.add_resource(UserWishlistList, "/wishlists")
+
+api.add_resource(SiteWishlistList, "/sitewishlists")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
