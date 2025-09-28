@@ -1,7 +1,9 @@
+from sqlalchemy import event
 from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, Session
 from config import db
 from models.Country import CountryModel
+from models.Cities import CityModel
 
 class SitesModel(db.Model, SerializerMixin):
     __tablename__ = "sites"
@@ -29,7 +31,16 @@ class SitesModel(db.Model, SerializerMixin):
     )
 
     # VALIDATES
-    @validates("country_id", "site_name")
+    @event.listens_for(Session, "before_flush")
+    def validate_city_country(session, flush_context, instances):
+        for obj in session.new:
+            breakpoint()
+            if isinstance(obj, SitesModel):
+                city = CityModel.query.get(obj.city_id)
+                if city and city.country_id != obj.country_id:
+                    raise ValueError(f"City {obj.city_id} does not belong to Country {obj.country_id}")
+    
+    @validates("country_id", "site_name", "city_id")
     def validate_country(self, key, value):
         # 1 - Ensure country exists
         if key == "country_id":
@@ -37,7 +48,13 @@ class SitesModel(db.Model, SerializerMixin):
             if not existing_country:
                 raise ValueError(f"Country {value} does not exist.")
         
-        # 2 - Ensure site name is a string, but not an empty one
+        # 2 - Ensure city exists
+        if key == "city_id":
+            exisiting_city = CityModel.query.filter(CityModel.id == value).first()
+            if not exisiting_city:
+                raise ValueError(f"City {value} does not exist.")
+        
+        # 3 - Ensure site name is a string, but not an empty one
         if key == "site_name":
             if not isinstance(value, str) or value == "":
                 raise ValueError("Please enter a valid site name")
