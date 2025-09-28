@@ -34,7 +34,6 @@ class SitesModel(db.Model, SerializerMixin):
     @event.listens_for(Session, "before_flush")
     def validate_city_country(session, flush_context, instances):
         for obj in session.new:
-            breakpoint()
             if isinstance(obj, SitesModel):
                 city = CityModel.query.get(obj.city_id)
                 if city and city.country_id != obj.country_id:
