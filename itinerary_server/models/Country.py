@@ -13,6 +13,8 @@ class CountryModel(db.Model, SerializerMixin):
     # RELATIONSHIPS
     sites = db.relationship("SitesModel", back_populates = "country")
 
+    cities = db.relationship("CityModel", back_populates = "country")
+
     # SERIALISE RULES
     serialize_rules = (
         "-sites.country",

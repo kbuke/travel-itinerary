@@ -18,6 +18,9 @@ class SitesModel(db.Model, SerializerMixin):
     country_id = db.Column(db.ForeignKey("countries.id"))
     country = db.relationship("CountryModel", back_populates = "sites")
 
+    city_id = db.Column(db.ForeignKey("cities.id"))
+    city = db.relationship("CityModel", back_populates = "sites")
+
     interests = db.relationship("InterestsModel", back_populates = "sites", secondary = "site_interests")
 
     # SERIALIZE RULES

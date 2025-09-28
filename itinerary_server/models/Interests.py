@@ -1,4 +1,5 @@
 from config import db 
+from sqlalchemy import func
 from sqlalchemy.orm import validates
 from sqlalchemy_serializer import SerializerMixin
 
@@ -24,7 +25,10 @@ class InterestsModel(db.Model, SerializerMixin):
             raise ValueError("Please enter a valid interest")
         
         # 2 - Ensure this interest has not already been registered
-        existing_interest = InterestsModel.query.filter(InterestsModel.interest == value).first()
+        # existing_interest = InterestsModel.query.filter(InterestsModel.interest.lower() == value.lower()).first()
+        existing_interest = InterestsModel.query.filter(
+            func.lower(InterestsModel.interest) == value.lower()
+        ).first()
         if existing_interest and existing_interest.id != self.id:
             raise ValueError(f"{value} is already registered as an interest on this app.")
         
